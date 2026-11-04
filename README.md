@@ -1,58 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Student Information Management System (SIMS)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+An AI-assisted Laravel web application + REST API for managing students, subjects,
+and enrollments, built as the final project for the Laravel Web Development course.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Authentication** — registration, login, logout (Laravel Breeze, Blade stack)
+- **Authorization** — role-based access control (`Administrator` / `Staff`) via an
+  `admin` middleware; Staff can view records, only Admins can create/edit/delete
+- **Student Management** — full CRUD (student number, name, email, course, year level)
+- **Subject Management** — full CRUD (subject code, name, units)
+- **Enrollment Management** — full CRUD linking Students ↔ Subjects, with a
+  composite-unique rule preventing duplicate enrollment in the same subject/term
+- **Dashboard** — live student/subject/enrollment counts and a by-year-level breakdown
+- **REST API** — token-authenticated (Sanctum) JSON CRUD for students, subjects,
+  and enrollments
+- **Validation** — required fields, email format, uniqueness, length/range limits
+- **Automated tests** — 44 PHPUnit feature tests covering web CRUD, role
+  restrictions, validation, and the REST API
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 13, PHP 8.3
+- Blade + Laravel Breeze (authentication scaffolding)
+- SQLite (zero-config, file-based database)
+- Laravel Sanctum (API token authentication)
+- PHPUnit (feature tests)
+- Laravel Pint (code style)
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3+
+- Composer 2.x
+- Node.js 18+ / npm (for building frontend assets)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup Instructions
 
 ```bash
-composer require laravel/boost --dev
+# 1. Install PHP dependencies
+composer install
 
-php artisan boost:install
+# 2. Copy the environment file and generate an app key
+cp .env.example .env
+php artisan key:generate
+
+# 3. Create the SQLite database file
+touch database/database.sqlite
+# (On Windows, instead: type nul > database\database.sqlite)
+
+# 4. Run migrations and seed demo data
+php artisan migrate --seed
+
+# 5. Install JS dependencies and build frontend assets
+npm install
+npm run build
+
+# 6. Serve the application
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The app will be available at `http://localhost:8000`.
 
-## Contributing
+`.env` already defaults to `DB_CONNECTION=sqlite`, so no database server setup is
+required.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Database Setup / Export
 
-## Code of Conduct
+This project uses **SQLite** for simplicity and portability. The seeded database
+file is included at `database/database.sqlite`. To regenerate it from scratch:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan migrate:fresh --seed
+```
 
-## Security Vulnerabilities
+Schema overview:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Table | Key columns | Relationships |
+|---|---|---|
+| `users` | name, email, role (`admin`/`staff`) | has many (none) |
+| `students` | student_number (unique), first_name, last_name, email (unique), course, year_level | has many `enrollments` |
+| `subjects` | subject_code (unique), subject_name, units | has many `enrollments` |
+| `enrollments` | student_id, subject_id, school_year, semester, status | belongs to `student`, `subject`; unique on (student_id, subject_id, school_year, semester) |
 
-## License
+## Demo Accounts
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Seeded by `database/seeders/DatabaseSeeder.php`:
+
+| Role | Email | Password |
+|---|---|---|
+| Administrator | `admin@sims.test` | `password` |
+| Staff | `staff@sims.test` | `password` |
+
+Administrators have full CRUD access across all modules. Staff accounts can view
+all records (Students, Subjects, Enrollments, Dashboard) but cannot create, edit,
+or delete — enforced server-side by the `admin` middleware (`EnsureUserIsAdmin`),
+not just hidden in the UI.
+
+## API Usage
+
+All API routes live under `/api` and require a Sanctum bearer token (except login).
+
+### Authenticate
+
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" -H "Accept: application/json" \
+  -d '{"email":"admin@sims.test","password":"password"}'
+```
+
+Response:
+
+```json
+{
+  "token": "1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "user": { "id": 1, "name": "System Administrator", "email": "admin@sims.test", "role": "admin" }
+}
+```
+
+Use the returned token as a `Bearer` token on subsequent requests.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/login` | Exchange credentials for an API token |
+| POST | `/api/logout` | Revoke the current token |
+| GET | `/api/students` | List students (paginated) |
+| GET | `/api/students/{id}` | Get a single student |
+| POST | `/api/students` | Create a student |
+| PUT | `/api/students/{id}` | Update a student |
+| DELETE | `/api/students/{id}` | Delete a student |
+| GET\|POST\|PUT\|DELETE | `/api/subjects[/{id}]` | Same CRUD shape for subjects |
+| GET\|POST\|PUT\|DELETE | `/api/enrollments[/{id}]` | Same CRUD shape for enrollments |
+
+### Example: create a student
+
+```bash
+curl -X POST http://localhost:8000/api/students \
+  -H "Authorization: Bearer <token>" \
+  -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"student_number":"S99-0002","first_name":"Maria","last_name":"Santos","email":"maria@sims.test","course":"BSCS","year_level":3}'
+```
+
+A Postman collection can be generated by importing the routes above, or via
+`php artisan route:list --path=api`.
+
+## Running Tests
+
+```bash
+php artisan test
+```
+
+44 feature tests cover: guest redirects, role-based access control, server-side
+validation (required/unique/email), the enrollment composite-uniqueness rule, and
+the full REST API (including the 401 unauthenticated case).
+
+## Project Structure Notes
+
+- `app/Enums/Role.php`, `app/Enums/EnrollmentStatus.php` — typed enums for role and
+  enrollment status instead of magic strings
+- `app/Http/Middleware/EnsureUserIsAdmin.php` — aliased as `admin` in
+  `bootstrap/app.php`, used on all create/edit/delete routes
+- `app/Http/Controllers/Api/` — JSON API controllers, separate from the Blade web
+  controllers in `app/Http/Controllers/`
+- `app/Http/Resources/` — Eloquent API Resources for consistent JSON responses
+- `routes/web.php` — note the explicit route ordering: `create`/`edit` routes are
+  registered before the `{student}` show wildcard to avoid the wildcard swallowing
+  literal segments like `/students/create`
+- `routes/api.php` — API route names are prefixed `api.*` to avoid colliding with
+  the web route names of the same resource
+
+## AI-Assisted Development
+
+This project was built with AI-agent assistance (Claude Code). See the accompanying
+`AI_PORTFOLIO.pdf`, `AGENT_DESIGN.pdf`, and `REFLECTION.pdf` for the prompt history,
+agent workflow, and engineering reflection.
