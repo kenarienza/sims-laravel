@@ -170,6 +170,38 @@ the full REST API (including the 401 unauthenticated case).
 - `routes/api.php` — API route names are prefixed `api.*` to avoid colliding with
   the web route names of the same resource
 
+## Deployment (Railway)
+
+The app includes a `Procfile` so Railway's Nixpacks builder can run it directly.
+
+1. Push this repository to GitHub.
+2. On [railway.app](https://railway.app), sign in with GitHub and create a new
+   project from this repo.
+3. Attach a **Volume** mounted at `/app/database` so the SQLite file persists
+   across deploys/restarts (Railway's filesystem is otherwise ephemeral).
+4. Set these environment variables in the Railway service:
+
+   | Variable | Value |
+   |---|---|
+   | `APP_KEY` | Generate locally with `php artisan key:generate --show` and paste the output |
+   | `APP_ENV` | `production` |
+   | `APP_DEBUG` | `false` |
+   | `APP_URL` | Your Railway-assigned domain, e.g. `https://sims-laravel.up.railway.app` |
+   | `DB_CONNECTION` | `sqlite` |
+   | `DB_DATABASE` | `/app/database/database.sqlite` |
+   | `SESSION_DRIVER` | `database` |
+   | `CACHE_STORE` | `database` |
+   | `QUEUE_CONNECTION` | `database` |
+
+5. Deploy. The `Procfile`'s start command runs `php artisan migrate --force`
+   on every boot (safe/idempotent) before serving the app.
+6. Seed demo data once, after the first successful deploy, via Railway's
+   "Run a command" / shell feature:
+
+   ```bash
+   php artisan db:seed --force
+   ```
+
 ## AI-Assisted Development
 
 This project was built with AI-agent assistance (Claude Code). See the accompanying
