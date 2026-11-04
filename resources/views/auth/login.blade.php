@@ -1,4 +1,11 @@
 <x-guest-layout>
+    <div class="mb-6 text-center">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Login to Your Account</h1>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Access the student portal, enrollment records, and dashboard.
+        </p>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -32,16 +39,25 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
+            <x-primary-button class="ms-3 !normal-case !tracking-normal !text-sm !px-6 !py-2.5">
+                {{ __('Login') }}
             </x-primary-button>
         </div>
     </form>
+
+    <div class="mt-8 rounded-xl bg-brand-50 dark:bg-brand-950/40 border border-brand-100 dark:border-brand-900 p-4">
+        <p class="text-xs font-bold uppercase tracking-wide text-brand-700 dark:text-brand-300">Login Instructions</p>
+        <ul class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
+            <li>Enter the <span class="font-medium text-gray-800 dark:text-gray-200">email</span> and <span class="font-medium text-gray-800 dark:text-gray-200">password</span> provided to you.</li>
+            <li>New here? <a href="{{ route('register') }}" class="text-brand-600 dark:text-brand-400 underline">Enroll Now</a> to create a student account.</li>
+            <li>For access issues, contact the NexusEd registrar's office.</li>
+        </ul>
+    </div>
 </x-guest-layout>
