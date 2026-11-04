@@ -12,7 +12,7 @@ class StoreSubjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,9 @@ class StoreSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'subject_code' => ['required', 'string', 'max:20', 'unique:subjects,subject_code'],
+            'subject_name' => ['required', 'string', 'max:150'],
+            'units' => ['required', 'integer', 'between:1,6'],
         ];
     }
 }
