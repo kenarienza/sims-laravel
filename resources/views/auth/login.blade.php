@@ -1,8 +1,8 @@
 <x-guest-layout>
-    <div class="mb-6 text-center">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Login to Your Account</h1>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Login</h1>
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Access the student portal, enrollment records, and dashboard.
+            Enter your account details to access the student portal.
         </p>
     </div>
 
@@ -39,25 +39,23 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-between mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+        @if (Route::has('password.request'))
+            <div class="mt-3 text-right">
+                <a class="underline text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 dark:focus:ring-offset-gray-900" href="{{ route('password.request') }}">
+                    {{ __('Forgot Password?') }}
                 </a>
-            @endif
+            </div>
+        @endif
 
-            <x-primary-button class="ms-3 !normal-case !tracking-normal !text-sm !px-6 !py-2.5">
-                {{ __('Login') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="mt-6 w-full justify-center !normal-case !tracking-normal !text-sm !py-3">
+            {{ __('Login') }}
+        </x-primary-button>
     </form>
 
-    <div class="mt-8 rounded-xl bg-brand-50 dark:bg-brand-950/40 border border-brand-100 dark:border-brand-900 p-4">
-        <p class="text-xs font-bold uppercase tracking-wide text-brand-700 dark:text-brand-300">Login Instructions</p>
-        <ul class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
-            <li>Enter the <span class="font-medium text-gray-800 dark:text-gray-200">email</span> and <span class="font-medium text-gray-800 dark:text-gray-200">password</span> provided to you.</li>
-            <li>New here? <a href="{{ route('register') }}" class="text-brand-600 dark:text-brand-400 underline">Enroll Now</a> to create a student account.</li>
-            <li>For access issues, contact the NexusEd registrar's office.</li>
-        </ul>
-    </div>
+    @if (Route::has('register'))
+        <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+            Don't have an account?
+            <a href="{{ route('register') }}" class="font-semibold text-brand-600 dark:text-brand-400 hover:underline">Enroll Now</a>
+        </p>
+    @endif
 </x-guest-layout>
