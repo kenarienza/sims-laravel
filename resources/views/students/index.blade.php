@@ -38,7 +38,7 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $student->student_number }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('students.show', $student) }}" class="text-indigo-600 hover:underline">
+                                    <a href="{{ route('students.show', $student) }}" class="text-brand-600 hover:underline">
                                         {{ $student->fullName() }}
                                     </a>
                                 </td>
@@ -47,7 +47,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $student->year_level }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
                                     @if (auth()->user()->isAdmin())
-                                        <a href="{{ route('students.edit', $student) }}" class="text-sm text-indigo-600 hover:underline">{{ __('Edit') }}</a>
+                                        <a href="{{ route('students.edit', $student) }}" class="text-sm text-brand-600 hover:underline">{{ __('Edit') }}</a>
                                         <form action="{{ route('students.destroy', $student) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('Delete this student?') }}')">
                                             @csrf
                                             @method('DELETE')

@@ -43,7 +43,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap capitalize">{{ $enrollment->status->value }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
                                     @if (auth()->user()->isAdmin())
-                                        <a href="{{ route('enrollments.edit', $enrollment) }}" class="text-sm text-indigo-600 hover:underline">{{ __('Edit') }}</a>
+                                        <a href="{{ route('enrollments.edit', $enrollment) }}" class="text-sm text-brand-600 hover:underline">{{ __('Edit') }}</a>
                                         <form action="{{ route('enrollments.destroy', $enrollment) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('Remove this enrollment?') }}')">
                                             @csrf
                                             @method('DELETE')

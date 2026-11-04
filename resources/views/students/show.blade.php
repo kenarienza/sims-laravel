@@ -57,7 +57,7 @@
                 @endif
             </div>
 
-            <a href="{{ route('students.index') }}" class="text-sm text-indigo-600 hover:underline">{{ __('Back to Students') }}</a>
+            <a href="{{ route('students.index') }}" class="text-sm text-brand-600 hover:underline">{{ __('Back to Students') }}</a>
         </div>
     </div>
 </x-app-layout>

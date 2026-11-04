@@ -39,7 +39,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $subject->units }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
                                     @if (auth()->user()->isAdmin())
-                                        <a href="{{ route('subjects.edit', $subject) }}" class="text-sm text-indigo-600 hover:underline">{{ __('Edit') }}</a>
+                                        <a href="{{ route('subjects.edit', $subject) }}" class="text-sm text-brand-600 hover:underline">{{ __('Edit') }}</a>
                                         <form action="{{ route('subjects.destroy', $subject) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('Delete this subject?') }}')">
                                             @csrf
                                             @method('DELETE')
