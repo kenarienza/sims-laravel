@@ -1,18 +1,31 @@
-# Student Information Management System (SIMS)
+# Tech Academy — Student Information Management System (SIMS)
 
 An AI-assisted Laravel web application + REST API for managing students, subjects,
 and enrollments, built as the final project for the Laravel Web Development course.
+Branded as **Tech Academy**, with a dark cyberpunk-neon UI throughout.
 
 ## Features
 
-- **Authentication** — registration, login, logout (Laravel Breeze, Blade stack)
-- **Authorization** — role-based access control (`Administrator` / `Staff`) via an
-  `admin` middleware; Staff can view records, only Admins can create/edit/delete
-- **Student Management** — full CRUD (student number, name, email, course, year level)
+- **Authentication** — registration ("Enroll Now"), login, logout (Laravel Breeze,
+  Blade stack), with a Student/Admin portal switcher on the login screen
+- **Three roles** — `Admin`, `Staff`, and `Student`, enforced server-side via the
+  `admin` and `staff` middleware (not just hidden in the UI):
+  - **Admin** — full CRUD across Students, Subjects, Enrollments
+  - **Staff** — can view all records (Students, Subjects, Enrollments, Dashboard)
+    but cannot create/edit/delete
+  - **Student** — self-service only: a personal portal showing their own student
+    record and enrollments; blocked from every staff/admin management route
+- **Student self-enrollment** — "Enroll Now" creates a `Student`-role account and
+  either links it to a matching student record (e.g. an official roster entry) or
+  creates a new one, auto-generating a student number
+- **Student Management** — full CRUD (student number, name + middle name, email,
+  course, year level), with a live search box (name, student number, or email)
 - **Subject Management** — full CRUD (subject code, name, units)
 - **Enrollment Management** — full CRUD linking Students ↔ Subjects, with a
   composite-unique rule preventing duplicate enrollment in the same subject/term
-- **Dashboard** — live student/subject/enrollment counts and a by-year-level breakdown
+- **Dashboard** — role-aware: Admins get a control center (quick actions, student
+  search, recent enrollment activity, course/year breakdowns); Staff get a browse
+  view; Students get their own enrollment summary
 - **REST API** — token-authenticated (Sanctum) JSON CRUD for students, subjects,
   and enrollments
 - **Validation** — required fields, email format, uniqueness, length/range limits
@@ -77,8 +90,8 @@ Schema overview:
 
 | Table | Key columns | Relationships |
 |---|---|---|
-| `users` | name, email, role (`admin`/`staff`) | has many (none) |
-| `students` | student_number (unique), first_name, last_name, email (unique), course, year_level | has many `enrollments` |
+| `users` | name, first_name, last_name, middle_initial, contact_number, email, role (`admin`/`staff`/`student`) | `hasOne` `students` (when role is `student`) |
+| `students` | user_id (nullable, unique), student_number (unique), first_name, middle_name, last_name, email (unique), course, year_level | `belongsTo` `users`; has many `enrollments` |
 | `subjects` | subject_code (unique), subject_name, units | has many `enrollments` |
 | `enrollments` | student_id, subject_id, school_year, semester, status | belongs to `student`, `subject`; unique on (student_id, subject_id, school_year, semester) |
 
@@ -90,11 +103,14 @@ Seeded by `database/seeders/DatabaseSeeder.php`:
 |---|---|---|
 | Administrator | `admin@sims.test` | `password` |
 | Staff | `staff@sims.test` | `password` |
+| Student | `ace.cabuga@techacademy.edu` | `password` |
 
 Administrators have full CRUD access across all modules. Staff accounts can view
 all records (Students, Subjects, Enrollments, Dashboard) but cannot create, edit,
-or delete — enforced server-side by the `admin` middleware (`EnsureUserIsAdmin`),
-not just hidden in the UI.
+or delete. Student accounts only see their own portal and are blocked from every
+staff/admin route. All of this is enforced server-side by the `admin`
+(`EnsureUserIsAdmin`) and `staff` (`EnsureUserIsStaffOrAdmin`) middleware, not just
+hidden in the UI.
 
 ## API Usage
 
@@ -161,6 +177,8 @@ the full REST API (including the 401 unauthenticated case).
   enrollment status instead of magic strings
 - `app/Http/Middleware/EnsureUserIsAdmin.php` — aliased as `admin` in
   `bootstrap/app.php`, used on all create/edit/delete routes
+- `app/Http/Middleware/EnsureUserIsStaffOrAdmin.php` — aliased as `staff`, blocks
+  `Student`-role accounts from every Students/Subjects/Enrollments management route
 - `app/Http/Controllers/Api/` — JSON API controllers, separate from the Blade web
   controllers in `app/Http/Controllers/`
 - `app/Http/Resources/` — Eloquent API Resources for consistent JSON responses
