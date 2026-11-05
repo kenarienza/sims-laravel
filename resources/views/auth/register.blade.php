@@ -7,13 +7,42 @@
     <form method="POST" action="{{ route('register') }}" class="space-y-4">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <label for="name" class="block text-xs font-mono uppercase text-cyan-400 mb-1.5">{{ __('Name') }}</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
-                placeholder="Juan Dela Cruz"
-                class="w-full px-4 py-2.5 bg-slate-950/70 border border-slate-700 focus:border-cyan-400 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono transition">
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <!-- Name / Surname -->
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label for="first_name" class="block text-xs font-mono uppercase text-cyan-400 mb-1.5">{{ __('Name') }}</label>
+                <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required autofocus autocomplete="given-name"
+                    placeholder="Juan"
+                    class="w-full px-4 py-2.5 bg-slate-950/70 border border-slate-700 focus:border-cyan-400 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono transition">
+                <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+            </div>
+
+            <div>
+                <label for="last_name" class="block text-xs font-mono uppercase text-cyan-400 mb-1.5">{{ __('Surname') }}</label>
+                <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required autocomplete="family-name"
+                    placeholder="Dela Cruz"
+                    class="w-full px-4 py-2.5 bg-slate-950/70 border border-slate-700 focus:border-cyan-400 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono transition">
+                <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+            </div>
+        </div>
+
+        <!-- Middle Initial / Contact Number -->
+        <div class="grid grid-cols-3 gap-3">
+            <div>
+                <label for="middle_initial" class="block text-xs font-mono uppercase text-cyan-400 mb-1.5">{{ __('M.I.') }}</label>
+                <input id="middle_initial" type="text" name="middle_initial" value="{{ old('middle_initial') }}" maxlength="5" autocomplete="additional-name"
+                    placeholder="S."
+                    class="w-full px-4 py-2.5 bg-slate-950/70 border border-slate-700 focus:border-cyan-400 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono transition">
+                <x-input-error :messages="$errors->get('middle_initial')" class="mt-2" />
+            </div>
+
+            <div class="col-span-2">
+                <label for="contact_number" class="block text-xs font-mono uppercase text-cyan-400 mb-1.5">{{ __('Contact Number') }}</label>
+                <input id="contact_number" type="tel" name="contact_number" value="{{ old('contact_number') }}" required autocomplete="tel"
+                    placeholder="09171234567"
+                    class="w-full px-4 py-2.5 bg-slate-950/70 border border-slate-700 focus:border-cyan-400 rounded-xl text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 font-mono transition">
+                <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
+            </div>
         </div>
 
         <!-- Email Address -->
