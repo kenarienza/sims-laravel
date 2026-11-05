@@ -7,7 +7,7 @@
                 <div class="shrink-0 flex items-center gap-2">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
                         <x-application-logo class="block h-9 w-9" />
-                        <span class="font-bold text-lg tracking-tight text-gray-800 dark:text-white">Nexus<span class="text-brand-500">Ed</span></span>
+                        <span class="font-bold text-lg tracking-tight text-gray-800 dark:text-white">Tech<span class="text-brand-500">Academy</span></span>
                     </a>
                 </div>
 

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'NexusEd') }} — Student Information Management System</title>
+        <title>{{ config('app.name', 'Tech Academy') }} — Student Information Management System</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -27,7 +27,7 @@
                 <nav class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
                     <a href="/" class="flex items-center gap-2.5">
                         <x-application-logo class="h-10 w-10" />
-                        <span class="font-bold text-xl tracking-tight">Nexus<span class="text-brand-400">Ed</span></span>
+                        <span class="font-bold text-xl tracking-tight">Tech<span class="text-brand-400">Academy</span></span>
                     </a>
 
                     <div class="flex items-center gap-3">
@@ -54,7 +54,7 @@
                 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 grid lg:grid-cols-2 gap-12 items-center w-full">
                     <div>
                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-semibold tracking-wide uppercase text-brand-300">
-                            NexusEd College · Student Portal
+                            Tech Academy · Student Portal
                         </span>
 
                         <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
@@ -63,7 +63,7 @@
                         </h1>
 
                         <p class="mt-6 text-lg text-gray-300 max-w-xl">
-                            NexusEd's Student Information Management System connects admissions,
+                            Tech Academy's Student Information Management System connects admissions,
                             academics, and student records in one modern, secure platform —
                             built for the next generation of learners.
                         </p>
@@ -140,7 +140,7 @@
 
             <footer class="border-t border-white/10">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
-                    <span>&copy; {{ date('Y') }} NexusEd College. All rights reserved.</span>
+                    <span>&copy; {{ date('Y') }} Tech Academy. All rights reserved.</span>
                     <span>Student Information Management System</span>
                 </div>
             </footer>

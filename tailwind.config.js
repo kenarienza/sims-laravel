@@ -15,6 +15,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                tech: ['Orbitron', ...defaultTheme.fontFamily.sans],
+                mono: ['Fira Code', ...defaultTheme.fontFamily.mono],
             },
             colors: {
                 brand: {
@@ -29,6 +31,9 @@ export default {
                     800: '#06578a',
                     900: '#0b4972',
                     950: '#072e4c',
+                },
+                cyber: {
+                    bg: '#0a0d14',
                 },
             },
         },

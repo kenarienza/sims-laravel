@@ -5,66 +5,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'NexusEd') }}</title>
+        <title>{{ config('app.name', 'Tech Academy') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen grid lg:grid-cols-2 bg-gray-950">
+    <body class="font-sans text-gray-100 antialiased">
+        <div class="min-h-screen flex items-center justify-center bg-cyber-bg cyber-grid relative overflow-hidden p-4">
+            <!-- Background glow effects -->
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none animate-pulse" style="animation-delay: 1.5s;"></div>
 
-            <!-- Left: auth card -->
-            <div class="flex flex-col justify-center items-center p-6 sm:p-12 lg:p-16">
-                <div class="w-full max-w-sm">
-                    <div class="flex items-center gap-2.5 mb-10">
-                        <a href="/" class="flex items-center gap-2.5">
-                            <x-application-logo class="h-9 w-9" />
-                            <span class="font-bold text-lg tracking-tight text-white">Nexus<span class="text-brand-400">Ed</span></span>
-                        </a>
+            <div class="w-full max-w-md relative z-10">
+                <!-- Header badge + logo -->
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-xs font-mono mb-4">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span>TECH ACADEMY · STUDENT PORTAL</span>
                     </div>
+                    <a href="/" class="inline-flex items-center justify-center gap-2.5">
+                        <x-application-logo class="h-9 w-9" />
+                        <span class="font-tech text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-400 uppercase">Tech Academy</span>
+                    </a>
+                </div>
+
+                <!-- Glass login card -->
+                <div class="cyber-glow bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500"></div>
 
                     {{ $slot }}
-                </div>
-            </div>
-
-            <!-- Right: brand / illustration panel -->
-            <div class="relative hidden lg:flex flex-col justify-center overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 p-16">
-                <svg class="absolute inset-0 w-full h-full -z-0" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 120C120 20 260 -20 420 40C580 100 620 260 760 260C840 260 800 440 760 540C720 640 560 720 400 700C240 680 160 760 40 720C-80 680 -100 500 -40 380C20 260 -60 200 0 120Z" fill="white" fill-opacity="0.06"/>
-                    <circle cx="640" cy="140" r="90" fill="white" fill-opacity="0.08"/>
-                    <circle cx="90" cy="650" r="130" fill="white" fill-opacity="0.05"/>
-                </svg>
-
-                <div class="relative z-10 max-w-md">
-                    <h2 class="text-4xl font-extrabold text-white leading-tight">
-                        Welcome to the<br />Student Portal
-                    </h2>
-                    <p class="mt-4 text-brand-100">
-                        Manage enrollment, track subjects, and stay on top of your
-                        academic records — all from one NexusEd account.
-                    </p>
-                </div>
-
-                <!-- Simple flat illustration -->
-                <div class="relative z-10 mt-12">
-                    <svg viewBox="0 0 420 300" class="w-full max-w-md" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="30" y="40" width="220" height="170" rx="16" fill="white" fill-opacity="0.12"/>
-                        <rect x="55" y="70" width="140" height="12" rx="6" fill="white" fill-opacity="0.65"/>
-                        <rect x="55" y="98" width="170" height="10" rx="5" fill="white" fill-opacity="0.35"/>
-                        <rect x="55" y="118" width="170" height="10" rx="5" fill="white" fill-opacity="0.35"/>
-                        <rect x="55" y="138" width="110" height="10" rx="5" fill="white" fill-opacity="0.35"/>
-                        <circle cx="300" cy="90" r="46" fill="white" fill-opacity="0.18"/>
-                        <path d="M300 68L330 82V98C330 112 316 124 300 128C284 124 270 112 270 98V82L300 68Z" fill="white" fill-opacity="0.85"/>
-                        <rect x="245" y="170" width="130" height="90" rx="14" fill="white" fill-opacity="0.14"/>
-                        <circle cx="275" cy="200" r="10" fill="white" fill-opacity="0.7"/>
-                        <rect x="295" y="194" width="90" height="8" rx="4" fill="white" fill-opacity="0.5"/>
-                        <rect x="295" y="210" width="60" height="8" rx="4" fill="white" fill-opacity="0.35"/>
-                        <rect x="262" y="232" width="100" height="10" rx="5" fill="white" fill-opacity="0.3"/>
-                    </svg>
                 </div>
             </div>
         </div>
